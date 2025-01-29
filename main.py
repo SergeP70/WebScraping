@@ -9,11 +9,18 @@ HEADERS = {
 
 def scrape(url):
     # Scrape the page source from a URL
+    # we are setting the User-Agent to make it look like we’re using a popular web browser via headers
     response = requests.get(url, headers=HEADERS)
     content = response.text
     return content
 
-
+def extract(source):
+    extractor = selectorlib.Extractor.from_yaml_file("extract.yaml")
+    print(extractor)
+    value = extractor.extract(source)["tours"]
+    return value
 
 if __name__ == '__main__':
-    print(scrape(URL))
+    scraped = scrape(URL)
+    extracted = extract(scraped)
+    print(extracted)
