@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 HOST = os.getenv("HOST")
-PORT = os.getenv("PORT")
+PORT = int(os.getenv("PORT"))
 MY_CONTEXT = ssl.create_default_context()
 PASSWORD = os.getenv("PASSWORD")
 SENDER = os.getenv("USERNAME")
@@ -31,16 +31,9 @@ def extract(source):
     return value
 
 def send_email(message):
-    host = HOST
-    port = int(PORT)
-    username = SENDER
-    password = PASSWORD
-    receiver = RECEIVER
-    context = MY_CONTEXT
-
-    with smtplib.SMTP_SSL(host, port, context=context) as server:
-        server.login(username, password)
-        server.sendmail(username, receiver, message)
+    with smtplib.SMTP_SSL(HOST, PORT, context=MY_CONTEXT) as server:
+        server.login(SENDER, PASSWORD)
+        server.sendmail(SENDER, RECEIVER, message)
 
     print("Mail was sent")
 
